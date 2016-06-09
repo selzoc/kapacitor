@@ -17,6 +17,7 @@ type Service struct {
 	url              string
 	global           bool
 	stateChangesOnly bool
+	emoji            string
 	logger           *log.Logger
 }
 
@@ -26,6 +27,7 @@ func NewService(c Config, l *log.Logger) *Service {
 		url:              c.URL,
 		global:           c.Global,
 		stateChangesOnly: c.StateChangesOnly,
+		emoji:            c.Emoji,
 		logger:           l,
 	}
 }
@@ -75,6 +77,10 @@ func (s *Service) Alert(channel, message string, level kapacitor.AlertLevel) err
 	postData["username"] = kapacitor.Product
 	postData["text"] = ""
 	postData["attachments"] = []attachment{a}
+
+	if s.emoji != "" {
+		postData["icon_emoji"] = s.emoji
+	}
 
 	var post bytes.Buffer
 	enc := json.NewEncoder(&post)

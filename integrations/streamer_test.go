@@ -3517,6 +3517,7 @@ func TestStream_AlertSlack(t *testing.T) {
 			Channel     string `json:"channel"`
 			Username    string `json:"username"`
 			Text        string `json:"text"`
+			Emoji       string `json:"icon_emoji"`
 			Attachments []struct {
 				Fallback string `json:"fallback"`
 				Color    string `json:"color"`
@@ -3558,6 +3559,9 @@ func TestStream_AlertSlack(t *testing.T) {
 				t.Errorf("unexpected color got %s exp %s", pd.Attachments[0].Color, exp)
 			}
 		}
+		if exp := ":info:"; pd.Emoji != exp {
+			t.Errorf("unexpected emoji got %s exp %s", pd.Emoji, exp)
+		}
 	}))
 	defer ts.Close()
 
@@ -3588,6 +3592,7 @@ stream
 	c := slack.NewConfig()
 	c.URL = ts.URL + "/test/slack/url"
 	c.Channel = "#channel"
+	c.Emoji = ":info:"
 	sl := slack.NewService(c, logService.NewLogger("[test_slack] ", log.LstdFlags))
 	tm.SlackService = sl
 

@@ -12,6 +12,8 @@ type Config struct {
 	// Whether all alerts should automatically use stateChangesOnly mode.
 	// Only applies if global is also set.
 	StateChangesOnly bool `toml:"state-changes-only"`
+	// Custom emoji for Slack alert
+	Emoji string `toml:"emoji"`
 }
 
 func NewConfig() Config {
